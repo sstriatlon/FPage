@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:float="http://www.w3.org/1999/xhtml">
+  <head>
+   </head>
+  <body>
+    <table width="1000"  align="center">
+        <tbody>
+            <tr>
+            <!-- Cabecera -->
+                <td>
+                    <div style="width:250px; float:left;">Logo</div>
+                    <div style="width:700px; float:right; margin-right:20px;">
+                      <a class="navbar-brand" href="{{ url_for('home') }}">home</a>
+                        <a class="navbar-brand" href="{{ url_for('about') }}">About</a>
+                        <a class="navbar-brand" href="{{ url_for('login') }}">Login</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="height: 90px"></div>
+                    {% block container %}{% endblock %}
+                </td>
+            </tr>
+            <tr></tr>
+        </tbody>
+
+    </table>
+
+  </body>
+</html>
