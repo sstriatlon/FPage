@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    {% if session.logged_in %}
+    <p>Usuarios:</p><br>
+
+    <table id="personDataTable" border="1">
+        <tr>
+
+            <th>Username</th>
+            <th>email</th>
+
+        </tr>
+    {% for item in data %}
+
+        <tr>
+
+            <th>{{ item.username }}</th>
+            <th>{{ item.email }}</th>
+        </tr>
+
+        {% else %}
+        <p>Listo!</p>
+    {% endfor %}
+
+    </table>
+    {% else %}
+        <p>No estas logeado!</p>
+    {% endif %}
+{% endblock %}
+/*
+
+
+
+
+
+script type=text/javascript>
+    $.ajax({
+        url: '/echo/json/',
+        type: "post",
+        dataType: "json",
+        data: {
+            json: JSON.stringify([
+                {{ data|tojson }}
+            ]),
+            delay: 3
+        },
+
+        success: function(data, textStatus, jqXHR) {
+            // since we are using jQuery, you don't need to parse response
+            drawTable(data);
+        }
+    });
+
+    function drawTable(data) {
+        for (var i = 0; i < data.length; i++) {
+            drawRow(data[i]);
+        }
+    }
+
+    function drawRow(rowData) {
+        var row = $("<tr />")
+        $("#personDataTable").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+        row.append($("<td>" + rowData.id + "</td>"));
+        row.append($("<td>" + rowData.username + "</td>"));
+        row.append($("<td>" + rowData.email + "</td>"));
+    }
+    $.ajax({
+        url: '/echo/json/',
+        type: 'POST',
+        data: {
+            json: {{ data|tojson }}
+        },
+        success: function (response) {
+            var trHTML = '';
+            $.each(response, function (i, item) {
+                trHTML += '<tr><td>' + item.ID + '</td><td>' + item.username + '</td><td>' + item.email + '</td></tr>';
+            });
+            $('#personDataTable').append(trHTML);
+        }
+    });
+/script*/
+

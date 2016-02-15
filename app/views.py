@@ -1,11 +1,31 @@
-from flask import render_template, url_for
-from flask import request, jsonify, flash
-from app import app, db
+from flask import render_template, session
+from flask import request, jsonify, flash, redirect, url_for
+from app import app, db, util
 from app.models import User
+import sqlite3
 from flask import views
 
+app.config.update(dict(
+    USERNAME='sstriatlon',
+    EMAIL='sstriatlon@gmail.com'
+))
 
 @app.route('/')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['email'] != app.config['EMAIL']:
+            error = 'Invalid email'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('home'))
+    return render_template('login.html', error=error)
+
+
 @app.route('/home', methods=['POST', 'GET'])
 def home():
         error = None
@@ -14,9 +34,6 @@ def home():
             email = request.form.get('email')
             if not all([username, email]):
                 error = 'All label is required!'
-
-
-                #return 'User created.'
             elif User.query.filter_by(username=username).first():
                 error = 'This username has been registered!'
             elif User.query.filter_by(email=email).first():
@@ -34,11 +51,6 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
-
 @app.route('/user/<id>')
 def product(id):
     user = User.query.get_or_404(id)
@@ -46,15 +58,9 @@ def product(id):
 
 
 @app.route('/users')
-def products():
-    users = User.query.all()
-    res = {}
-    for user in users:
-        res[user.id] = {
-            'name': user.username,
-            'mail': user.email
-        }
-    return jsonify(res)
+def users():
+    users = util.get_users()
+    return render_template('users.html', data=users)
 
 
 @app.route('/user-create', methods=['POST',])

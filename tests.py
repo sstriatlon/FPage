@@ -2,7 +2,7 @@ from flask.ext.testing import TestCase
 from app import db, app
 from app.models import User
 
-TEST_SQLALCHEMY_DATABASE_URI = "sqlite:///test.sqlite"
+TEST_SQLALCHEMY_DATABASE_URI = "sqlite:///app/test.sqlite"
 
 class MyTest(TestCase):
 
